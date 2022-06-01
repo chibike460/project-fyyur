@@ -20,55 +20,56 @@ app = Flask(__name__)
 moment = Moment(app)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+from models import *
 migrate = Migrate(app, db)
 
 # MODELS
-class Venue(db.Model):
-    __tablename__ = 'venue'
+# class Venue(db.Model):
+#     __tablename__ = 'venue'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String())
-    city = db.Column(db.String(120))
-    state = db.Column(db.String(120))
-    address = db.Column(db.String(120))
-    phone = db.Column(db.String(120))
-    website_link = db.Column(db.String(500))
-    genres = db.Column(db.ARRAY(db.String(120)))
-    image_link = db.Column(db.String(500))
-    facebook_link = db.Column(db.String(500))
-    seeking_talent = db.Column(db.Boolean, nullable=False, default=False)
-    seeking_description = db.Column(db.String(500))
-    shows = db.relationship('Show', cascade='all, delete-orphan', backref='venue', lazy=True)
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String())
+#     city = db.Column(db.String(120))
+#     state = db.Column(db.String(120))
+#     address = db.Column(db.String(120))
+#     phone = db.Column(db.String(120))
+#     website_link = db.Column(db.String(500))
+#     genres = db.Column(db.ARRAY(db.String(120)))
+#     image_link = db.Column(db.String(500))
+#     facebook_link = db.Column(db.String(500))
+#     seeking_talent = db.Column(db.Boolean, nullable=False, default=False)
+#     seeking_description = db.Column(db.String(500))
+#     shows = db.relationship('Show', cascade='all, delete-orphan', backref='venue', lazy=True)
 
-    def __repr__(self):
-      return f'Venue Table:{self.id} - {self.name}'
+#     def __repr__(self):
+#       return f'Venue Table:{self.id} - {self.name}'
 
-class Artist(db.Model):
-    __tablename__ = 'artist'
+# class Artist(db.Model):
+#     __tablename__ = 'artist'
 
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String())
-    city = db.Column(db.String(120))
-    state = db.Column(db.String(120))
-    phone = db.Column(db.String(120))
-    genres = db.Column(db.ARRAY(db.String(120)))
-    image_link = db.Column(db.String(500))
-    website_link = db.Column(db.String(500))
-    facebook_link = db.Column(db.String(500))
-    seeking_venue = db.Column(db.Boolean, nullable=False, default=False)
-    seeking_description = db.Column(db.String(500))
-    shows = db.relationship('Show', backref='artist', lazy=True)
+#     id = db.Column(db.Integer, primary_key=True)
+#     name = db.Column(db.String())
+#     city = db.Column(db.String(120))
+#     state = db.Column(db.String(120))
+#     phone = db.Column(db.String(120))
+#     genres = db.Column(db.ARRAY(db.String(120)))
+#     image_link = db.Column(db.String(500))
+#     website_link = db.Column(db.String(500))
+#     facebook_link = db.Column(db.String(500))
+#     seeking_venue = db.Column(db.Boolean, nullable=False, default=False)
+#     seeking_description = db.Column(db.String(500))
+#     shows = db.relationship('Show', backref='artist', lazy=True)
 
-    def __repr__(self):
-      return f'Artist Table:{self.id} - {self.name}'
+#     def __repr__(self):
+#       return f'Artist Table:{self.id} - {self.name}'
 
-class Show(db.Model):
-  __tablename__ = 'show'
+# class Show(db.Model):
+#   __tablename__ = 'show'
 
-  id = db.Column(db.Integer, primary_key=True)
-  venue_id = db.Column(db.Integer, db.ForeignKey('venue.id', onupdate='cascade', ondelete='cascade'))
-  artist_id = db.Column(db.Integer, db.ForeignKey('artist.id', onupdate='cascade', ondelete='cascade'))
-  start_time = db.Column(db.DateTime, nullable=False)
+#   id = db.Column(db.Integer, primary_key=True)
+#   venue_id = db.Column(db.Integer, db.ForeignKey('venue.id', onupdate='cascade', ondelete='cascade'))
+#   artist_id = db.Column(db.Integer, db.ForeignKey('artist.id', onupdate='cascade', ondelete='cascade'))
+#   start_time = db.Column(db.DateTime, nullable=False)
 
 # FILTERS
 
