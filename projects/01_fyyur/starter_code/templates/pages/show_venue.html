@@ -24,7 +24,7 @@
 			<i class="fas fa-phone-alt"></i> {% if venue.phone %}{{ venue.phone }}{% else %}No Phone{% endif %}
 		</p>
 		<p>
-			<i class="fas fa-link"></i> {% if venue.website %}<a href="{{ venue.website }}" target="_blank">{{ venue.website }}</a>{% else %}No Website{% endif %}
+			<i class="fas fa-link"></i> {% if venue.website_link %}<a href="{{ venue.website_link }}" target="_blank">{{ venue.website_link }}</a>{% else %}No Website{% endif %}
 		</p>
 		<p>
 			<i class="fab fa-facebook-f"></i> {% if venue.facebook_link %}<a href="{{ venue.facebook_link }}" target="_blank">{{ venue.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
@@ -47,13 +47,13 @@
 	</div>
 </div>
 <section>
-	<h2 class="monospace">{{ venue.upcoming_shows_count }} Upcoming {% if venue.upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<h2 class="monospace">{{ venue.count_upcoming_show }} Upcoming {% if venue.count_upcoming_show == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
-		{%for show in venue.upcoming_shows %}
+		{%for show in venue.upcoming_show %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				<img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
-				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
+				<img src="{{ show.artist.image_link }}" alt="Show Artist Image" />
+				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist.name }}</a></h5>
 				<h6>{{ show.start_time|datetime('full') }}</h6>
 			</div>
 		</div>
@@ -61,13 +61,13 @@
 	</div>
 </section>
 <section>
-	<h2 class="monospace">{{ venue.past_shows_count }} Past {% if venue.past_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<h2 class="monospace">{{ venue.count_past_show }} Past {% if venue.count_past_show == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
-		{%for show in venue.past_shows %}
+		{%for show in venue.past_show %}
 		<div class="col-sm-4">
 			<div class="tile tile-show">
-				<img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
-				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
+				<img src="{{ show.artist.image_link }}" alt="Show Artist Image" />
+				<h5><a href="/artists/{{ show.artist_id }}">{{ show.artist.name }}</a></h5>
 				<h6>{{ show.start_time|datetime('full') }}</h6>
 			</div>
 		</div>
@@ -76,6 +76,20 @@
 </section>
 
 <a href="/venues/{{ venue.id }}/edit"><button class="btn btn-primary btn-lg">Edit</button></a>
+<button data-id="{{ venue.id }}", id="del-btn", class="dltd-button btn btn-danger btn-lg">Delete</button>
 
+<script>
+	const deleteButton = document.querySelector('.dltd-button');
+	deleteButton.onclick = function(e) {
+		console.log(e)
+		if (window.confirm("Click 'yes' to confirm")) {
+			const venueId = e.target.dataset.id;
+			fetch('/venues/'+ venueId, {
+				method: 'DELETE'
+	}).then(function(){
+		window.open('/', '_self')
+	})
+}
+}
+</script>
 {% endblock %}
-

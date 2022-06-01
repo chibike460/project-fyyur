@@ -4,6 +4,7 @@
   <div class="form-wrapper">
     <form class="form" method="post" action="/venues/{{venue.id}}/edit">
       <h3 class="form-heading">Edit venue <em>{{ venue.name }}</em> <a href="{{ url_for('index') }}" title="Back to homepage"><i class="fa fa-home pull-right"></i></a></h3>
+      {{ form.hidden_tag() }}
       <div class="form-group">
         <label for="name">Name</label>
         {{ form.name(class_ = 'form-control', autofocus = true) }}
@@ -25,7 +26,7 @@
       </div>
       <div class="form-group">
           <label for="phone">Phone</label>
-          {{ form.phone(class_ = 'form-control', placeholder='xxx-xxx-xxxx', autofocus = true) }}
+          {{ form.phone(class_ = 'form-control', placeholder='+x-xxx-xxx-xxxx', autofocus = true) }}
         </div>
       <div class="form-group">
         <label for="genres">Genres</label>
@@ -49,15 +50,19 @@
 
         <div class="form-group">
              <label for="seeking_talent">Looking for Talent</label>
+             <!-- {% if venue.seeking_talent %} -->
              {{ form.seeking_talent(placeholder='Venue', autofocus = true) }}
-        </div>
+             <!-- {% else %} -->
+             <!-- {{ form.seeking_talent(placeholder='Venue', autofocus = true, checked = false) }} -->
+             <!-- {% endif %} -->
+            </div>
 
         <div class="form-group">
             <label for="seeking_description">Seeking Description</label>
             {{ form.seeking_description(class_ = 'form-control', autofocus = true) }}
           </div>
       
-      <input type="submit" value="Edit Venue" class="btn btn-primary btn-lg btn-block">
+      <input type="submit" value="Save" class="btn btn-primary btn-lg btn-block">
     </form>
   </div>
 {% endblock %}
