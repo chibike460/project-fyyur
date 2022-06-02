@@ -70,7 +70,6 @@ def show_venue(venue_id):
   venue_obj['count_upcoming_show'] = len(upcoming_show)
   venue_obj['count_past_show'] = len(past_show)
   venue_obj = Venue.query.get(venue_id)
-  print(venue_obj.genres)
   return render_template('pages/show_venue.html', venue=venue_obj)
 
 #  CREATE VENUES
@@ -162,9 +161,7 @@ def delete_venue(venue_id):
   try:
     venue = Venue.query.get(venue_id)
     db.session.delete(venue)
-    print(venue.name)
     db.session.commit()
-    print('ok')
   except:
     error = True
     db.session.rollback()
@@ -205,7 +202,6 @@ def show_artist(artist_id):
   artist_obj['count_upcoming_show'] = len(upcoming_show)
   artist_obj['count_past_show'] = len(past_show)
   artist_obj = Artist.query.get(artist_id)
-  print(artist_obj.genres)
   return render_template('pages/show_artist.html', artist=Artist.query.get(artist_id))
 
 #  CREATE ARTISTS
@@ -297,7 +293,6 @@ def delete_artist(artist_id):
     artist = Artist.query.get(artist_id)
     db.session.delete(artist)
     db.session.commit()
-    (print('ok'))
   except:
     error = True
     print(sys.exc_info())
