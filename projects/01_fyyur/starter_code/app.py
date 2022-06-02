@@ -62,15 +62,9 @@ def search_venues():
 def show_venue(venue_id):
   date_today = datetime.now()
   venue = Venue.query.get(venue_id)
-  upcoming_show = [show for show in venue.shows if show.start_time > date_today if len(show.artist.name) > 0]
-  past_show = [show for show in venue.shows if show.start_time < date_today if len(show.artist.name) > 0]
-  venue_obj = vars(venue)
-  venue_obj['upcoming_show'] = upcoming_show
-  venue_obj['past_show'] = past_show
-  venue_obj['count_upcoming_show'] = len(upcoming_show)
-  venue_obj['count_past_show'] = len(past_show)
-  venue_obj = Venue.query.get(venue_id)
-  return render_template('pages/show_venue.html', venue=venue_obj)
+  upcoming_shows = db.session.query(Show).join(Artist).filter(Show.venue_id == venue_id).filter(Show.start_time > date_today).all()
+  past_shows = db.session.query(Show).join(Artist).filter(Show.venue_id == venue_id).filter(Show.start_time < date_today).all()
+  return render_template('pages/show_venue.html', venue=venue, upcoming_shows=upcoming_shows, past_shows=past_shows)
 
 #  CREATE VENUES
 
@@ -194,15 +188,11 @@ def search_artists():
 def show_artist(artist_id):
   date_today = datetime.now()
   artist = Artist.query.get(artist_id)
-  upcoming_show = [show for show in artist.shows if show.start_time > date_today if len(show.venue.name) > 0]
-  past_show = [show for show in artist.shows if show.start_time < date_today if len(show.venue.name) > 0]
-  artist_obj = vars(artist)
-  artist_obj['upcoming_show'] = upcoming_show
-  artist_obj['past_show'] = past_show
-  artist_obj['count_upcoming_show'] = len(upcoming_show)
-  artist_obj['count_past_show'] = len(past_show)
-  artist_obj = Artist.query.get(artist_id)
-  return render_template('pages/show_artist.html', artist=Artist.query.get(artist_id))
+  upcoming_shows = db.session.query(Show).join(Venue).filter(Show.artist_id == artist_id).filter(Show.start_time > date_today).all()
+  upcoming_shows = [show for show in upcoming_shows if len(show.venue.name) > 0]
+  past_shows = db.session.query(Show).join(Venue).filter(Show.artist_id == artist_id).filter(Show.start_time > date_today).all()
+  past_shows = [show for show in past_shows if len(show.venue.name) > 0]
+  return render_template('pages/show_artist.html', artist=artist, past_shows = past_shows, upcoming_shows = upcoming_shows)
 
 #  CREATE ARTISTS
 
