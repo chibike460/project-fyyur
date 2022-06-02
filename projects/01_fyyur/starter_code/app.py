@@ -133,8 +133,8 @@ def create_venue_form():
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
   form = VenueForm(csrf_enabled=False)
+  error = False
   if form.validate_on_submit():
-    error = False
     try:
       name = form.name.data
       city = form.city.data
@@ -160,10 +160,11 @@ def create_venue_submission():
       print(sys.exc_info())
     finally:
       db.session.close()
-    if error:
-      abort(400)
-    else:
-      return render_template('pages/home.html')
+  if error:
+    print(sys.exc_info())
+    abort(400)
+  else:
+    return render_template('pages/home.html')
 
 # UPDATE VENUES
 
@@ -176,8 +177,8 @@ def edit_venue(venue_id):
 def edit_venue_submission(venue_id):
   form = VenueForm(csrf_enabled=False)
   venue = Venue.query.get(venue_id)
+  error = False
   if form.validate_on_submit():
-    error = False
     try:
       venue.name = form.name.data
       venue.city = form.city.data
@@ -197,10 +198,11 @@ def edit_venue_submission(venue_id):
       db.session.rollback()
       flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.')
       print(sys.exc_info())
-    if error:
-      abort(400)
-    else:
-      return redirect(url_for('show_venue', venue_id=venue.id))
+  if error:
+    print(sys.exc_info())
+    abort(400)
+  else:
+    return redirect(url_for('show_venue', venue_id=venue.id))
 
 # DELETE VENUES
 
