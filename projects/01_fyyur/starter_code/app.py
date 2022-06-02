@@ -1,6 +1,5 @@
 # IMPORTS
 
-# import json
 import dateutil.parser
 import babel
 from flask import Flask, jsonify, render_template, request, Response, flash, redirect, url_for, abort
@@ -9,9 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import logging
 from logging import Formatter, FileHandler
-# from flask_wtf import Form
 from forms import *
-# from models import *
 import sys
 
 # APP CONFIG
@@ -23,58 +20,9 @@ db = SQLAlchemy(app)
 from models import *
 migrate = Migrate(app, db)
 
-# MODELS
-# class Venue(db.Model):
-#     __tablename__ = 'venue'
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String())
-#     city = db.Column(db.String(120))
-#     state = db.Column(db.String(120))
-#     address = db.Column(db.String(120))
-#     phone = db.Column(db.String(120))
-#     website_link = db.Column(db.String(500))
-#     genres = db.Column(db.ARRAY(db.String(120)))
-#     image_link = db.Column(db.String(500))
-#     facebook_link = db.Column(db.String(500))
-#     seeking_talent = db.Column(db.Boolean, nullable=False, default=False)
-#     seeking_description = db.Column(db.String(500))
-#     shows = db.relationship('Show', cascade='all, delete-orphan', backref='venue', lazy=True)
-
-#     def __repr__(self):
-#       return f'Venue Table:{self.id} - {self.name}'
-
-# class Artist(db.Model):
-#     __tablename__ = 'artist'
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     name = db.Column(db.String())
-#     city = db.Column(db.String(120))
-#     state = db.Column(db.String(120))
-#     phone = db.Column(db.String(120))
-#     genres = db.Column(db.ARRAY(db.String(120)))
-#     image_link = db.Column(db.String(500))
-#     website_link = db.Column(db.String(500))
-#     facebook_link = db.Column(db.String(500))
-#     seeking_venue = db.Column(db.Boolean, nullable=False, default=False)
-#     seeking_description = db.Column(db.String(500))
-#     shows = db.relationship('Show', backref='artist', lazy=True)
-
-#     def __repr__(self):
-#       return f'Artist Table:{self.id} - {self.name}'
-
-# class Show(db.Model):
-#   __tablename__ = 'show'
-
-#   id = db.Column(db.Integer, primary_key=True)
-#   venue_id = db.Column(db.Integer, db.ForeignKey('venue.id', onupdate='cascade', ondelete='cascade'))
-#   artist_id = db.Column(db.Integer, db.ForeignKey('artist.id', onupdate='cascade', ondelete='cascade'))
-#   start_time = db.Column(db.DateTime, nullable=False)
-
 # FILTERS
 
 def format_datetime(value, format='medium'):
-  # date = dateutil.parser.parse(value)
   if isinstance(value, datetime):
     value = value.strftime('%Y-%m-%d %H:%M:%S')
     date = dateutil.parser.parse(value,ignoretz=True)
@@ -222,6 +170,7 @@ def delete_venue(venue_id):
   finally:
     db.session.close()
   if error:
+    print(sys.exc_info())
     abort(500)
   else:
     return jsonify({'success': True})
@@ -276,7 +225,6 @@ def create_artist_submission():
       phone = form.phone.data
       image_link = form.image_link.data
       genres = form.genres.data
-      print(dir(genres))
       facebook_link = form.facebook_link.data
       website_link = form.website_link.data
       seeking_venue = form.seeking_venue.data
@@ -284,7 +232,6 @@ def create_artist_submission():
       artists = Artist(name=name, city=city, state=state,
       phone=phone, image_link=image_link, genres=genres, facebook_link=facebook_link,
       website_link=website_link, seeking_venue=seeking_venue, seeking_description=seeking_description)
-      # artists.genres.extend(genres)
       db.session.add(artists)
       db.session.commit()
       flash('Artist ' + request.form['name'] + ' was successfully listed!')
@@ -331,11 +278,10 @@ def edit_artist_submission(artist_id):
     except:
       error = True
       db.session.rollback()
-      flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.')
       print(sys.exc_info())
-    # finally:
-      # db.session.close()
+      flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.')
     if error:
+      print(sys.exc_info())
       abort(400)
     else:
       return redirect(url_for('show_artist', artist_id=artist.id))
@@ -352,10 +298,12 @@ def delete_artist(artist_id):
     (print('ok'))
   except:
     error = True
+    print(sys.exc_info())
     db.session.rollback()
   finally:
     db.session.close()
   if error:
+    print(sys.exc_info())
     abort(500)
   else:
     return jsonify({'success': True})
