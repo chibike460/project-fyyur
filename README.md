@@ -31,7 +31,18 @@ pip install SQLAlchemy
 pip install postgres
 pip install Flask
 pip install Flask-Migrate
+pip install psycopg2
+pip install Flask-SQLAlchemy
+pip install Flask-WTF
+pip install jinja2
+pip install python-dateutil
+pip install Babel
+pip install phonenumbers
+pip install pycodestyle
 ```
+
+We advise to look up the requirements.txt file for a complete list of dependencies.
+
 > **Note** - If we do not mention the specific version of a package, then the default latest stable package will be installed. 
 
 ### 2. Frontend Dependencies
