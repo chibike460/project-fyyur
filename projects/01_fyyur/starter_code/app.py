@@ -71,14 +71,6 @@ def index():
 app.register_blueprint(venue_bp, url_prefix='/venues')
 app.register_blueprint(artist_bp, url_prefix='/artists')
 
-#  CREATE VENUES
-
-
-@app.route('/venues/create', methods=['GET'])
-def create_venue_form():
-    form = VenueForm(csrf_enabled=False)
-    return render_template('forms/new_venue.html', form=form)
-
 
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
@@ -197,14 +189,6 @@ def delete_venue(venue_id):
         return jsonify({'success': True})
 
 #  ARTISTS
-
-#  CREATE ARTISTS
-
-
-@app.route('/artists/create', methods=['GET'])
-def create_artist_form():
-    form = ArtistForm(csrf_enabled=False)
-    return render_template('forms/new_artist.html', form=form)
 
 
 @app.route('/artists/create', methods=['POST'])

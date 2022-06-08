@@ -1,0 +1,10 @@
+# created by virtualenv automatically
+Lib/*
+*.cfg
+__pycache__/
+Include/*
+Scripts/
+models.py
+migrations/__pycache__/
+venues/__pycache__/
+artists/__pycache__/
