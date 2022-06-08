@@ -24,6 +24,8 @@ from logging import (
 )
 from forms import *
 import sys
+from venues.venues import venue_bp
+from artists.artists import artist_bp
 
 app = Flask(__name__)
 setup_db(app)
@@ -66,10 +68,8 @@ def index():
 
 #  VENUES
 
-
-@app.route('/venues')
-def venues():
-    return render_template('pages/venues.html', venues=Venue.query.all())
+app.register_blueprint(venue_bp, url_prefix='/venues')
+app.register_blueprint(artist_bp, url_prefix='/artists')
 
 
 @app.route('/venues/search', methods=['POST'])
@@ -234,11 +234,6 @@ def delete_venue(venue_id):
         return jsonify({'success': True})
 
 #  ARTISTS
-
-
-@app.route('/artists')
-def artists():
-    return render_template('pages/artists.html', artists=Artist.query.all())
 
 
 @app.route('/artists/search', methods=['POST'])
