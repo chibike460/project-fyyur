@@ -71,22 +71,6 @@ def index():
 app.register_blueprint(venue_bp, url_prefix='/venues')
 app.register_blueprint(artist_bp, url_prefix='/artists')
 
-@app.route('/venues/<int:venue_id>')
-def show_venue(venue_id):
-    date_today = datetime.now()
-    venue = Venue.query.get(venue_id)
-    upcoming_shows = db.session.query(Show).join(Artist).filter(
-        Show.venue_id == venue_id).filter(
-        Show.start_time > date_today).all()
-    past_shows = db.session.query(Show).join(Artist).filter(
-        Show.venue_id == venue_id).filter(
-        Show.start_time < date_today).all()
-    return render_template(
-        'pages/show_venue.html',
-        venue=venue,
-        upcoming_shows=upcoming_shows,
-        past_shows=past_shows)
-
 #  CREATE VENUES
 
 
@@ -213,27 +197,6 @@ def delete_venue(venue_id):
         return jsonify({'success': True})
 
 #  ARTISTS
-
-
-@app.route('/artists/<int:artist_id>')
-def show_artist(artist_id):
-    date_today = datetime.now()
-    artist = Artist.query.get(artist_id)
-    upcoming_shows = db.session.query(Show).join(Venue).filter(
-        Show.artist_id == artist_id).filter(
-        Show.start_time > date_today).all()
-    upcoming_shows = [
-        show for show in upcoming_shows if len(
-            show.venue.name) > 0]
-    past_shows = db.session.query(Show).join(Venue).filter(
-        Show.artist_id == artist_id).filter(
-        Show.start_time > date_today).all()
-    past_shows = [show for show in past_shows if len(show.venue.name) > 0]
-    return render_template(
-        'pages/show_artist.html',
-        artist=artist,
-        past_shows=past_shows,
-        upcoming_shows=upcoming_shows)
 
 #  CREATE ARTISTS
 

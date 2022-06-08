@@ -53,9 +53,9 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li>
-              {% if (request.endpoint == 'venues') or
-                (request.endpoint == 'search_venues') or
-                (request.endpoint == 'show_venue') %}
+              {% if (request.endpoint == 'venue.venues') or
+                (request.endpoint == 'venue.search_venues') or
+                (request.endpoint == 'venue.show_venue') %}
               <form class="search" method="post" action="/venues/search">
                 <input class="form-control"
                   type="search"
@@ -64,9 +64,9 @@
                   aria-label="Search">
               </form>
               {% endif %}
-              {% if (request.endpoint == 'artists') or
-                (request.endpoint == 'search_artists') or
-                (request.endpoint == 'show_artist') %}
+              {% if (request.endpoint == 'artist.artists') or
+                (request.endpoint == 'artist.search_artists') or
+                (request.endpoint == 'artist.show_artist') %}
               <form class="search" method="post" action="/artists/search">
                 <input class="form-control"
                   type="search"
