@@ -74,3 +74,33 @@ Form to add new artists
 def create_artist_form():
     form = ArtistForm(csrf_enabled=False)
     return render_template('forms/new_artist.html', form=form)
+
+
+'''
+Sumit form to add new artists
+'''
+@artist_bp.route('/create', methods=['POST'])
+def create_artist_submission():
+    form = ArtistForm(csrf_enabled=False)
+    if form.validate_on_submit():
+        artist = Artist(
+            name=form.name.data,
+            city=form.city.data,
+            state=form.state.data,
+            phone=form.phone.data,
+            genres=form.genres.data,
+            image_link=form.image_link.data,
+            facebook_link=form.facebook_link.data,
+            website_link=form.website_link.data,
+            seeking_venue=form.seeking_venue.data,
+            seeking_description=form.seeking_description.data)
+        db.session.add(artist)
+        db.session.commit()
+        db.session.close()
+        flash('Artist ' + request.form['name'] + ' was successfully listed!')
+        return redirect(url_for('artist.artists'))
+    else:
+        flash('An error occurred. Artist ' +
+              request.form['name'] + ' could not be listed.')
+        print(form.errors)
+        return render_template('forms/new_artist.html', form=form)

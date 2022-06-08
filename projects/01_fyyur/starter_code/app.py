@@ -71,54 +71,6 @@ def index():
 app.register_blueprint(venue_bp, url_prefix='/venues')
 app.register_blueprint(artist_bp, url_prefix='/artists')
 
-
-@app.route('/venues/create', methods=['POST'])
-def create_venue_submission():
-    form = VenueForm(csrf_enabled=False)
-    error = False
-    if form.validate_on_submit():
-        try:
-            name = form.name.data
-            city = form.city.data
-            state = form.state.data
-            address = form.address.data
-            phone = form.phone.data
-            image_link = form.image_link.data
-            genres = form.genres.data
-            facebook_link = form.facebook_link.data
-            website_link = form.website_link.data
-            seeking_talent = form.seeking_talent.data
-            seeking_description = form.seeking_description.data
-            venues = Venue(
-                name=name,
-                city=city,
-                state=state,
-                address=address,
-                phone=phone,
-                image_link=image_link,
-                genres=genres,
-                facebook_link=facebook_link,
-                website_link=website_link,
-                seeking_talent=seeking_talent,
-                seeking_description=seeking_description)
-            db.session.add(venues)
-            db.session.commit()
-            flash('Venue ' + request.form['name'] +
-                  ' was successfully listed!')
-        except BaseException:
-            error = True
-            db.session.rollback()
-            flash('An error occurred. Venue ' + request.form['name']
-                  + ' could not be listed.')
-            print(sys.exc_info())
-        finally:
-            db.session.close()
-    if error:
-        print(sys.exc_info())
-        abort(400)
-    else:
-        return render_template('pages/home.html')
-
 # UPDATE VENUES
 
 
@@ -189,52 +141,6 @@ def delete_venue(venue_id):
         return jsonify({'success': True})
 
 #  ARTISTS
-
-
-@app.route('/artists/create', methods=['POST'])
-def create_artist_submission():
-    form = ArtistForm(csrf_enabled=False)
-    error = False
-    if form.validate_on_submit():
-        try:
-            name = form.name.data
-            city = form.city.data
-            state = form.state.data
-            phone = form.phone.data
-            image_link = form.image_link.data
-            genres = form.genres.data
-            facebook_link = form.facebook_link.data
-            website_link = form.website_link.data
-            seeking_venue = form.seeking_venue.data
-            seeking_description = form.seeking_description.data
-            artists = Artist(
-                name=name,
-                city=city,
-                state=state,
-                phone=phone,
-                image_link=image_link,
-                genres=genres,
-                facebook_link=facebook_link,
-                website_link=website_link,
-                seeking_venue=seeking_venue,
-                seeking_description=seeking_description)
-            db.session.add(artists)
-            db.session.commit()
-            flash('Artist ' + request.form['name'] +
-                  ' was successfully listed!')
-        except BaseException:
-            error = True
-            db.session.rollback()
-            flash('An error occurred. Artist ' + request.form['name'] +
-                  ' could not be listed.')
-            print(sys.exc_info())
-        finally:
-            db.session.close()
-    if error:
-        print(sys.exc_info())
-        abort(400)
-    else:
-        return render_template('pages/home.html')
 
 
 #  UPDATE ARTISTS

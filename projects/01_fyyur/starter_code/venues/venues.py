@@ -74,49 +74,34 @@ def create_venue_form():
     return render_template('forms/new_venue.html', form=form)
 
 
-# '''
-# Submit form to add new venues
-# '''
-# @venue_bp.route('/venues/create', methods=['POST'])
-# def create_venue_submission():
-#     form = VenueForm(csrf_enabled=False)
-#     if form.validate_on_submit():
-#         name = form.name.data
-#         city = form.city.data
-#         state = form.state.data
-#         address = form.address.data
-#         phone = form.phone.data
-#         genres = form.genres.data
-#         image_link = form.image_link.data
-#         facebook_link = form.facebook_link.data
-#         website_link = form.website_link.data
-#         seeking_talent = form.seeking_talent.data
-#         seeking_description = form.seeking_description.data
-#         new_venue = Venue(
-#             name=name,
-#             city=city,
-#             state=state,
-#             address=address,
-#             phone=phone,
-#             genres=genres,
-#             image_link=image_link,
-#             facebook_link=facebook_link,
-#             website_link=website_link,
-#             seeking_talent=seeking_talent,
-#             seeking_description=seeking_description)
-#         db.session.add(new_venue)
-#         db.session.commit()
-#         flash('Venue ' + request.form['name'] +
-#                   ' was successfully listed!')
-#         db.session.close()
-#         return render_template('pages/home.html')
-#     else:
-#         print(sys.exc_info())
-#         db.session.rollback()
-#         flash('An error occurred. Venue ' + request.form['name']
-#                 + ' could not be listed.')
-#         db.session.close()
-#         return render_template('forms/new_venue.html', form=form)
+'''
+Submit form to add new venues
+'''
+@venue_bp.route('/create', methods=['POST'])
+def create_venue_submission():
+    form = VenueForm(csrf_enabled=False)
+    if form.validate_on_submit():
+        vanue = Venue(
+            name=form.name.data,
+            city=form.city.data,
+            state=form.state.data,
+            address=form.address.data,
+            phone=form.phone.data,
+            genres=form.genres.data,
+            facebook_link=form.facebook_link.data,
+            image_link=form.image_link.data,
+            website_link=form.website_link.data,
+            seeking_talent=form.seeking_talent.data,
+            seeking_description=form.seeking_description.data)
+        db.session.add(vanue)
+        db.session.commit()
+        db.session.close()
+        flash('Venue ' + request.form['name'] + ' was successfully listed!')
+        return redirect(url_for('venue.venues'))
+    else:
+        flash('An error occurred. Venue ' + request.form['name'] + ' could not be listed.')
+        print(form.errors)
+        return render_template('forms/new_venue.html', form=form)
 
 
 # '''
