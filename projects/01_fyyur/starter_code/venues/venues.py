@@ -128,57 +128,57 @@ def edit_venue(venue_id):
         venue=venue)
 
 
-# '''
-# Update venue
-# '''
-# @venue_bp.route('/venues/<int:venue_id>/edit', methods=['POST'])
-# def edit_venue_submission(venue_id):
-#     form = VenueForm(csrf_enabled=False)
-#     if form.validate_on_submit():
-#         venue = Venue.query.get(venue_id)
-#         venue.name = form.name.data
-#         venue.city = form.city.data
-#         venue.state = form.state.data
-#         venue.address = form.address.data
-#         venue.phone = form.phone.data
-#         venue.genres = form.genres.data
-#         venue.image_link = form.image_link.data
-#         venue.facebook_link = form.facebook_link.data
-#         venue.website_link = form.website_link.data
-#         venue.seeking_talent = form.seeking_talent.data
-#         venue.seeking_description = form.seeking_description.data
-#         db.session.commit()
-#         flash('Venue ' + request.form['name'] +
-#               ' was successfully updated!')
-#         db.session.close()
-#         return redirect(url_for('show_venue', venue_id=venue_id))
-#     else:
-#         print(sys.exc_info())
-#         db.session.rollback()
-#         flash('An error occurred. Venue ' + request.form['name']
-#               + ' could not be updated.')
-#         db.session.close()
-#         return render_template('forms/edit_venue.html', form=form)
+'''
+Update venue
+'''
+@venue_bp.route('/<int:venue_id>/edit', methods=['POST'])
+def edit_venue_submission(venue_id):
+    form = VenueForm(csrf_enabled=False)
+    venue = Venue.query.get(venue_id)
+    if form.validate_on_submit():
+        venue.name = form.name.data
+        venue.city = form.city.data
+        venue.state = form.state.data
+        venue.address = form.address.data
+        venue.phone = form.phone.data
+        venue.genres = form.genres.data
+        venue.image_link = form.image_link.data
+        venue.facebook_link = form.facebook_link.data
+        venue.website_link = form.website_link.data
+        venue.seeking_talent = form.seeking_talent.data
+        venue.seeking_description = form.seeking_description.data
+        db.session.commit()
+        flash('Venue ' + request.form['name'] +
+              ' was successfully updated!')
+        db.session.close()
+        return redirect(url_for('venue.show_venue', venue_id=venue_id))
+    else:
+        print(sys.exc_info())
+        db.session.rollback()
+        flash('An error occurred. Venue ' + request.form['name']
+              + ' could not be updated.')
+        db.session.close()
+        return render_template('forms/edit_venue.html', form=form)
 
 
-# '''
-# Delete venue
-# '''
-# @venue_bp.route('/venues/<int:venue_id>/delete', methods=['DELETE'])
-# def delete_venue(venue_id):
-#     error = False
-#     try:
-#         venue = Venue.query.get(venue_id)
-#         db.session.delete(venue)
-#         db.session.commit()
-#         flash('Venue ' + venue.name + ' was successfully deleted!')
-#         db.session.close()
-#     except BaseException:
-#         error = True
-#         db.session.rollback()
-#         print(sys.exc_info())
-#         flash('An error occurred. Venue ' + venue.name +
-#               ' could not be deleted.')
-#     finally:
-#         db.session.close()
-#         return jsonify({'success': True})
+'''
+Delete venue
+'''
+@venue_bp.route('/<venue_id>/', methods=['DELETE'])
+def delete_venue(venue_id):
+    error = False
+    try:
+        venue = Venue.query.get(venue_id)
+        db.session.delete(venue)
+        db.session.commit()
+        flash('Venue ' + venue.name + ' was successfully deleted!')
+    except BaseException:
+        error = True
+        db.session.rollback()
+        print(sys.exc_info())
+        flash('An error occurred. Venue ' + venue.name +
+              ' could not be deleted.')
+    finally:
+        db.session.close()
+        # return redirect(url_for('venue.venues'))
+        return jsonify({'success': True, 'error': error})

@@ -84,7 +84,7 @@
 		console.log(e)
 		if (window.confirm("Click 'ok' to confirm")) {
 			const venueId = e.target.dataset.id;
-			fetch('/venues/'+ venueId, {
+			fetch('/venue.venues/'+ venueId, {
 				method: 'DELETE'
 	}).then(function(){
 		window.open('/', '_self')

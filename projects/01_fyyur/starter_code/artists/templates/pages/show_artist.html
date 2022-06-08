@@ -78,9 +78,9 @@
 <script>
 	const deleteButton = document.querySelector('.dltd-button');
 	deleteButton.onclick = function(e) {
-	  if (window.confirm("Click 'yes' to confirm")){
+	  if (window.confirm("Click 'ok' to confirm")){
 		const artistId = e.target.dataset.id;
-		fetch('/artists/'+ artistId, {
+		fetch('/artist.artists/'+ artistId, {
 		  method: 'DELETE'
 	}).then(function(){
 		window.open('/', '_self')

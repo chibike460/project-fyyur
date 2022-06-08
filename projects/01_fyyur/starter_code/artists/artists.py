@@ -124,3 +124,56 @@ def edit_artist(artist_id):
     form.seeking_venue.data = artist.seeking_venue
     form.seeking_description.data = artist.seeking_description
     return render_template('forms/edit_artist.html', form=form, artist=artist)
+
+
+'''
+Update artist
+'''
+@artist_bp.route('/<int:artist_id>/edit', methods=['POST'])
+def update_artist(artist_id):
+    form = ArtistForm(csrf_enabled=False)
+    artist = Artist.query.get(artist_id)
+    if form.validate_on_submit():
+        artist.name = form.name.data
+        artist.city = form.city.data
+        artist.state = form.state.data
+        artist.phone = form.phone.data
+        artist.genres = form.genres.data
+        artist.image_link = form.image_link.data
+        artist.facebook_link = form.facebook_link.data
+        artist.website_link = form.website_link.data
+        artist.seeking_venue = form.seeking_venue.data
+        artist.seeking_description = form.seeking_description.data
+        db.session.commit()
+        db.session.close()
+        flash('Artist ' + request.form['name'] + ' was successfully updated!')
+        return redirect(url_for('artist.show_artist', artist_id=artist_id))
+    else:
+        flash('An error occurred. Artist ' +
+              request.form['name'] + ' could not be updated.')
+        print(form.errors)
+        return render_template('forms/edit_artist.html', form=form, artist=artist)
+
+
+'''
+Delete artist
+'''
+@artist_bp.route('/<artist_id>', methods=['DELETE'])
+def delete_artist(artist_id):
+    error = False
+    try:
+        artist = Artist.query.get(artist_id)
+        db.session.delete(artist)
+        db.session.commit()
+        db.session.close()
+        flash('Artist ' + artist.name + ' was successfully deleted!')
+    except BaseException:
+        error = True
+        db.session.rollback()
+        db.session.close()
+        flash('An error occurred. Artist ' +
+              artist.name + ' could not be deleted.')  
+    finally:
+        db.session.close()
+        # return redirect(url_for('artist.artists'))
+        return jsonify({'success': True, 'error': error})
