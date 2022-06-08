@@ -71,27 +71,6 @@ def index():
 app.register_blueprint(venue_bp, url_prefix='/venues')
 app.register_blueprint(artist_bp, url_prefix='/artists')
 
-
-@app.route('/venues/search', methods=['POST'])
-def search_venues():
-    venues = Venue.query.filter(
-        Venue.name.ilike(
-            "%" +
-            request.form.get('search_term') +
-            '%')).all()
-    count_venues = len(venues)
-    response = {
-        "count": count_venues,
-        "data": venues
-    }
-    return render_template(
-        'pages/search_venues.html',
-        results=response,
-        search_term=request.form.get(
-            'search_term',
-            ''))
-
-
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
     date_today = datetime.now()
@@ -234,26 +213,6 @@ def delete_venue(venue_id):
         return jsonify({'success': True})
 
 #  ARTISTS
-
-
-@app.route('/artists/search', methods=['POST'])
-def search_artists():
-    artists = Artist.query.filter(
-        Artist.name.ilike(
-            "%" +
-            request.form.get('search_term') +
-            '%')).all()
-    count_artists = len(artists)
-    response = {
-        "count": count_artists,
-        "data": artists
-    }
-    return render_template(
-        'pages/search_artists.html',
-        results=response,
-        search_term=request.form.get(
-            'search_term',
-            ''))
 
 
 @app.route('/artists/<int:artist_id>')
