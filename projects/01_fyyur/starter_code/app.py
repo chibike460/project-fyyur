@@ -13,8 +13,9 @@ from flask import (
     url_for,
     abort
 )
+from models import setup_db, Venue, Artist, Show, db
 from flask_moment import Moment
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import logging
 from logging import (
@@ -25,13 +26,14 @@ from forms import *
 import sys
 
 app = Flask(__name__)
-db = SQLAlchemy(app)
-from models import *
+setup_db(app)
+# db = SQLAlchemy(app)
+
 # APP CONFIG
 
 
 moment = Moment(app)
-app.config.from_object('config')
+# app.config.from_object('config')
 migrate = Migrate(app, db)
 
 # FILTERS
