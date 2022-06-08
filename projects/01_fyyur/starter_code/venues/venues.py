@@ -104,28 +104,28 @@ def create_venue_submission():
         return render_template('forms/new_venue.html', form=form)
 
 
-# '''
-# Form to edit venues
-# '''
-# @venue_bp.route('/venues/<int:venue_id>/edit', methods=['GET'])
-# def edit_venue(venue_id):
-#     form = VenueForm(csrf_enabled=False)
-#     venue = Venue.query.get(venue_id)
-#     form.name.data = venue.name
-#     form.city.data = venue.city
-#     form.state.data = venue.state
-#     form.address.data = venue.address
-#     form.phone.data = venue.phone
-#     form.genres.data = venue.genres
-#     form.image_link.data = venue.image_link
-#     form.facebook_link.data = venue.facebook_link
-#     form.website_link.data = venue.website_link
-#     form.seeking_talent.data = venue.seeking_talent
-#     form.seeking_description.data = venue.seeking_description
-#     return render_template(
-#         'forms/edit_venue.html',
-#         form=form,
-#         venue=venue)
+'''
+Form to edit venues
+'''
+@venue_bp.route('/<int:venue_id>/edit', methods=['GET'])
+def edit_venue(venue_id):
+    form = VenueForm(csrf_enabled=False)
+    venue = Venue.query.get(venue_id)
+    form.name.data = venue.name
+    form.city.data = venue.city
+    form.state.data = venue.state
+    form.address.data = venue.address
+    form.phone.data = venue.phone
+    form.genres.data = venue.genres
+    form.image_link.data = venue.image_link
+    form.facebook_link.data = venue.facebook_link
+    form.website_link.data = venue.website_link
+    form.seeking_talent.data = venue.seeking_talent
+    form.seeking_description.data = venue.seeking_description
+    return render_template(
+        'forms/edit_venue.html',
+        form=form,
+        venue=venue)
 
 
 # '''

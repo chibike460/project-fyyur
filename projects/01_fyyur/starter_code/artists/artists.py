@@ -104,3 +104,23 @@ def create_artist_submission():
               request.form['name'] + ' could not be listed.')
         print(form.errors)
         return render_template('forms/new_artist.html', form=form)
+
+
+'''
+Form to edit artists
+'''
+@artist_bp.route('/<int:artist_id>/edit', methods=['GET'])
+def edit_artist(artist_id):
+    form = ArtistForm(csrf_enabled=False)
+    artist = Artist.query.get(artist_id)
+    form.name.data = artist.name
+    form.city.data = artist.city
+    form.state.data = artist.state
+    form.phone.data = artist.phone
+    form.genres.data = artist.genres
+    form.image_link.data = artist.image_link
+    form.facebook_link.data = artist.facebook_link
+    form.website_link.data = artist.website_link
+    form.seeking_venue.data = artist.seeking_venue
+    form.seeking_description.data = artist.seeking_description
+    return render_template('forms/edit_artist.html', form=form, artist=artist)

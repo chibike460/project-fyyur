@@ -74,15 +74,6 @@ app.register_blueprint(artist_bp, url_prefix='/artists')
 # UPDATE VENUES
 
 
-@app.route('/venues/<int:venue_id>/edit', methods=['GET'])
-def edit_venue(venue_id):
-    form = VenueForm(obj=Venue.query.get(venue_id))
-    return render_template(
-        'forms/edit_venue.html',
-        form=form,
-        venue=Venue.query.get(venue_id))
-
-
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
     form = VenueForm(csrf_enabled=False)
@@ -144,14 +135,6 @@ def delete_venue(venue_id):
 
 
 #  UPDATE ARTISTS
-
-@app.route('/artists/<int:artist_id>/edit', methods=['GET'])
-def edit_artist(artist_id):
-    form = ArtistForm(obj=Artist.query.get(artist_id))
-    return render_template(
-        'forms/edit_artist.html',
-        form=form,
-        artist=Artist.query.get(artist_id))
 
 
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
