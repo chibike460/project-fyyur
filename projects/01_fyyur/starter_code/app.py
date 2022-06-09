@@ -17,6 +17,7 @@ from models import setup_db, Venue, Artist, Show, db
 from flask_moment import Moment
 # from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_cors import CORS
 import logging
 from logging import (
     Formatter,
@@ -29,6 +30,7 @@ from artists.artists import artist_bp
 
 app = Flask(__name__)
 setup_db(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 # db = SQLAlchemy(app)
 
 # APP CONFIG
@@ -37,6 +39,13 @@ setup_db(app)
 moment = Moment(app)
 # app.config.from_object('config')
 migrate = Migrate(app, db)
+
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 # FILTERS
 
