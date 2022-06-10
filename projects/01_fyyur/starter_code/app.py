@@ -23,6 +23,7 @@ import sys
 from venues.venues import venue_bp
 from artists.artists import artist_bp
 from shows.shows import show_bp
+from api.api import api_bp
 
 
 '''
@@ -72,30 +73,12 @@ def create_app(test_config=None):
             artists=recent_artists,
             venues=recent_venues)
 
-
-    '''
-    API ROUTES
-    '''
-    @app.route('/api/venues')
-    def get_venues():
-        page = request.args.get('page', 1, type=int)
-        start = (page - 1) * 10
-        end = start + 10
-        venues = Venue.query.order_by(Venue.id.desc()).all()
-        formated_venues = [venue.format() for venue in venues]
-        return jsonify(
-            {
-                'success': True,
-                'data': formated_venues[start:end],
-                'total_venues': len(formated_venues)
-            }
-        )
-
     #  BLUEPRINTS
 
     app.register_blueprint(venue_bp, url_prefix='/venues')
     app.register_blueprint(artist_bp, url_prefix='/artists')
     app.register_blueprint(show_bp, url_prefix='/shows')
+    app.register_blueprint(api_bp, url_prefix='/api')
 
 
     @app.errorhandler(404)
