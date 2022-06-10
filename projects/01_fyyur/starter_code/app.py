@@ -4,18 +4,12 @@ import dateutil.parser
 import babel
 from flask import (
     Flask,
-    jsonify,
     render_template,
     request,
     Response,
-    flash,
-    redirect,
-    url_for,
-    abort
 )
-from models import setup_db, Venue, Artist, Show, db
+from models import setup_db, Venue, Artist, db
 from flask_moment import Moment
-# from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 import logging
@@ -29,18 +23,14 @@ from venues.venues import venue_bp
 from artists.artists import artist_bp
 from shows.shows import show_bp
 
+# APP CONFIG
 app = Flask(__name__)
 setup_db(app)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-# db = SQLAlchemy(app)
-
-# APP CONFIG
-
-
 moment = Moment(app)
-# app.config.from_object('config')
 migrate = Migrate(app, db)
 
+# CORS SETUP
 
 @app.after_request
 def after_request(response):
@@ -66,7 +56,6 @@ app.jinja_env.filters['datetime'] = format_datetime
 
 # CONTROLLERS
 
-
 @app.route('/')
 def index():
     recent_artists = Artist.query.order_by(Artist.id.desc()).limit(3).all()
@@ -76,7 +65,7 @@ def index():
         artists=recent_artists,
         venues=recent_venues)
 
-#  VENUES
+#  BLUEPRINTS
 
 app.register_blueprint(venue_bp, url_prefix='/venues')
 app.register_blueprint(artist_bp, url_prefix='/artists')
