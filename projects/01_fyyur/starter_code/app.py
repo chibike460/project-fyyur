@@ -4,6 +4,7 @@ import dateutil.parser
 import babel
 from flask import (
     Flask,
+    jsonify,
     render_template,
     request,
     Response,
@@ -70,6 +71,25 @@ def create_app(test_config=None):
             'pages/home.html',
             artists=recent_artists,
             venues=recent_venues)
+
+
+    '''
+    API ROUTES
+    '''
+    @app.route('/api/venues')
+    def get_venues():
+        page = request.args.get('page', 1, type=int)
+        start = (page - 1) * 10
+        end = start + 10
+        venues = Venue.query.order_by(Venue.id.desc()).all()
+        formated_venues = [venue.format() for venue in venues]
+        return jsonify(
+            {
+                'success': True,
+                'data': formated_venues[start:end],
+                'total_venues': len(formated_venues)
+            }
+        )
 
     #  BLUEPRINTS
 
