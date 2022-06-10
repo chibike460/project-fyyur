@@ -27,6 +27,7 @@ from forms import *
 import sys
 from venues.venues import venue_bp
 from artists.artists import artist_bp
+from shows.shows import show_bp
 
 app = Flask(__name__)
 setup_db(app)
@@ -79,13 +80,7 @@ def index():
 
 app.register_blueprint(venue_bp, url_prefix='/venues')
 app.register_blueprint(artist_bp, url_prefix='/artists')
-
-#  SHOWS
-
-
-@app.route('/shows')
-def shows():
-    return render_template('pages/shows.html', shows=Show.query.all())
+app.register_blueprint(show_bp, url_prefix='/shows')
 
 
 @app.route('/shows/create')
