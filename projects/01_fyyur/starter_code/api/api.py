@@ -24,3 +24,25 @@ def get_venues():
             'total_venues': len(formated_venues)
         }
     )
+
+
+'''
+Get specific venue
+'''
+@api_bp.route('/venues/<int:venue_id>')
+def get_venue(venue_id):
+    venue = Venue.query.get(venue_id)
+    if venue:
+        return jsonify(
+            {
+                'success': True,
+                'data': venue.format()
+            }
+        )
+    else:
+        return jsonify(
+            {
+                'success': False,
+                'message': 'Venue not found'
+            }
+        )
