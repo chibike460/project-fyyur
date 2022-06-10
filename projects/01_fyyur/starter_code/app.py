@@ -83,42 +83,6 @@ app.register_blueprint(artist_bp, url_prefix='/artists')
 app.register_blueprint(show_bp, url_prefix='/shows')
 
 
-@app.route('/shows/create')
-def create_shows():
-    form = ShowForm(csrf_enabled=False)
-    return render_template('forms/new_show.html', form=form)
-
-
-@app.route('/shows/create', methods=['POST'])
-def create_show_submission():
-    form = ShowForm(csrf_enabled=False)
-    error = False
-    if form.validate_on_submit():
-        try:
-            venue_id = form.venue_id.data
-            artist_id = form.artist_id.data
-            start_time = form.start_time.data
-            show = Show(
-                venue_id=venue_id,
-                artist_id=artist_id,
-                start_time=start_time)
-            db.session.add(show)
-            db.session.commit()
-            flash('Show was successfully listed!')
-        except BaseException:
-            error = True
-            db.session.rollback()
-            flash('An error occurred. Show could not be listed.')
-            print(sys.exc_info())
-        finally:
-            db.session.close()
-    if error:
-        print(sys.exc_info())
-        abort(400)
-    else:
-        return render_template('pages/home.html')
-
-
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('errors/404.html'), 404

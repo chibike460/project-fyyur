@@ -58,7 +58,7 @@ def show_artist(artist_id):
             show.venue.name) > 0]
     past_shows = db.session.query(Show).join(Venue).filter(
         Show.artist_id == artist_id).filter(
-        Show.start_time > date_today).all()
+        Show.start_time < date_today).all()
     past_shows = [show for show in past_shows if len(show.venue.name) > 0]
     return render_template(
         'pages/show_artist.html',
