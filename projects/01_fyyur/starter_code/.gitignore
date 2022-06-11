@@ -8,4 +8,4 @@ models.py
 migrations/__pycache__/
 venues/__pycache__/
 artists/__pycache__/
-../../bookshelf_project/*
+../../bookshelf_project/
