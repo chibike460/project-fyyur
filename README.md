@@ -7,7 +7,7 @@ Fyyur is a musical venue and artist booking site that facilitates the discovery 
 
 ## Overview
 
-This app feeds off real data (not actually true, lol)! There exists model interactions, which makes possible; store, retrieve, and update data (CRUD) from a database. This is a fully functioning site that is at least capable of doing the following, if not more, using a PostgreSQL database:
+This is a CRUD app feeds off real data (not actually true, lol)! There exists model interactions, which makes possible; store, retrieve, and update data (CRUD) from a database. This is a fully functioning site that is at least capable of doing the following, if not more, using a PostgreSQL database:
 
 * creating new venues, artists, and creating new shows.
 * searching for venues and artists.
